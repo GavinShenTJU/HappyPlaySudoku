@@ -1,5 +1,5 @@
 # HappyPlaySudoku
-好玩的数独小游戏
+好玩的数独小游戏，hello
 
 1.代码管理： github，项目名称：HappyPlaySudoku
 
