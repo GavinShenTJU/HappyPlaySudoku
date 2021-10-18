@@ -3,7 +3,7 @@
 
 1.代码管理： github，项目名称：HappyPlaySudoku
 
-2.前端：cocos creator javascript - 场景
+2.前端：cocos creator javascript/typescrpit - 场景
 
    后端：java idea
 
