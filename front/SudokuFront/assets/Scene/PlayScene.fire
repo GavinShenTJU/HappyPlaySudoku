@@ -180,7 +180,7 @@
       "array": [
         0,
         0,
-        794.1452952703303,
+        793.2792698665459,
         0,
         0,
         0,
@@ -2939,8 +2939,6 @@
       "__id__": 69
     },
     "_enabled": true,
-    "label": null,
-    "text": "hello",
     "_id": "44mB6Fce9ByLenODg1cKwv"
   },
   {
@@ -3326,8 +3324,6 @@
       "__id__": 77
     },
     "_enabled": true,
-    "label": null,
-    "text": "hello",
     "_id": "78Yj2aFMxPI668Yk9f7Yny"
   },
   {

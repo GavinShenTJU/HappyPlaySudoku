@@ -5,12 +5,7 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
-export default class ModelConfig {
-    private _serverAddress: string = '0.0.0.0:9090';
-    public get serverAddress(): string {
-        return this._serverAddress;
-    }
-    public set serverAddress(value: string) {
-        this._serverAddress = value;
-    }
+export default interface IBaseMsg {
+    msgCode: string;
+    msgBody: any;
 }

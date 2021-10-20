@@ -8,39 +8,86 @@
 import DropDown from "./DropDown/DropDown";
 import ModelAsyc from "./Utils/_Async";
 import ModelConfig from "./Utils/_Config"
+import ModelUtil from "./Utils/_Util"
+import ModelMsgSender from "./Utils/_MsgSender"
 
 const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class GameStart extends cc.Component {
 
-    @property(cc.Label)
-    label: cc.Label = null;
-
-    @property
-    text: string = 'hello';
+    config: ModelConfig = new ModelConfig();
 
     onLoad() {
         this.node.on("touchstart", this.onTouch, this);
     }
-
-    onTouch() {
-        let self = this;
-        ModelAsyc.serial(
-            (test1) => { self.doCheckParams(); test1(); },
-            (test2) => { self.doStart(); test2(); }
-        );
-
-        let config: ModelConfig = new ModelConfig();
-        console.log(config.serverAddress);
-    }
-
+    // start() {
+    // }
     // update (dt) {}
 
-    doCheckParams() {
-        console.log(1);
+    onTouch() {
+        //let self = this;
+        let strServerAddr = ModelUtil.getQueryStr("serverAddr") || this.config.serverAddress;
+        ModelAsyc.serial(
+            //
+            //000，连接服务器
+            (funCb000) => {
+                console.log(`连接到服务器 = ${strServerAddr}`);
+                ModelMsgSender.init(`ws://${strServerAddr}/websocket`);
+
+                ModelMsgSender.connect((bSuccess) => {
+                    if (bSuccess) {
+                        funCb000();//继续往下执行
+                    }
+                });
+
+                //定时重试连接
+                setInterval(() => {
+                    if (ModelMsgSender.isDisconnected) {
+                        ModelMsgSender.connect(null);
+                    }
+                }, 2000);
+            },
+
+            //
+            //001, 校验参数
+            (funCb001) => {
+                console.log(`校验参数`);
+                if (this.doCheckParams()) {
+                    funCb001();
+                }
+                else {
+                    this.doFailedCheckParams();
+                }
+            },
+
+            //
+            //002,
+            (funCb002) => {
+                console.log(`获取棋盘`);
+                this.doStart();
+                funCb002();
+            }
+        );
     }
 
+    /**
+     * 参数校验
+     * @returns 是否通过 
+     */
+    doCheckParams(): boolean {
+        console.log(1);
+        return true;
+    }
+
+    /**
+     * 参数校验不通过，需要处理的一些事情
+     */
+    doFailedCheckParams() {
+        console.log(2);
+    }
+
+    
     doStart() {
         //let startNode: cc.Node = cc.find('Canvas/游戏开始');
         //if (startNode) {
