@@ -10,15 +10,27 @@ import ModelAsyc from "./Utils/_Async";
 import ModelConfig from "./Utils/_Config"
 import ModelUtil from "./Utils/_Util"
 import ModelMsgSender from "./Utils/_MsgSender"
+import { sudokumsg } from "./Lib/SudokuMsg";
 
 const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class GameStart extends cc.Component {
 
+
     config: ModelConfig = new ModelConfig();
 
     onLoad() {
+
+
+
+        let ob = { userId: 123 };
+
+
+
+        let request = sudokumsg.UserGetChessCmd.create(ob);
+        let buf = sudokumsg.UserGetChessCmd.encode(request).finish();
+        cc.log(buf);
         this.node.on("touchstart", this.onTouch, this);
     }
     // start() {
@@ -87,7 +99,7 @@ export default class GameStart extends cc.Component {
         console.log(2);
     }
 
-    
+
     doStart() {
         //let startNode: cc.Node = cc.find('Canvas/游戏开始');
         //if (startNode) {

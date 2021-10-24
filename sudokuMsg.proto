@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package sudokumsg;
+//option java_package = "com.gavinshen.game.msg";
+
+//消息代码
+enum MsgCode{
+    USER_GET_CHESS_CMD = 0;//
+    USER_GET_CHESS_RESULT = 1;//
+}
+
+//游戏难度
+enum ChallengeLevel{
+    SIMPLE = 0;    
+    MEDIUM = 1;    
+    DIFFICULTY = 2;
+}
+
+// 
+// 获取棋盘
+///////////////////////////////////////////////////////////////////////
+// 指令
+message UserGetChessCmd{
+    //用户Id
+    uint32 userId=1;
+    //棋盘阶数
+    uint32 orderNum =2;
+    //游戏难度
+    ChallengeLevel challLevel=3;
+}
+
+//结果
+message UserGetChessResult{
+    //用户Id
+    uint32 userId=1;
+    //棋盘列表
+    repeated uint32 chessArray=2;
+}
