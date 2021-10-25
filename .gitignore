@@ -1,0 +1,10 @@
+
+*.class
+*.log
+back/.idea/$CACHE_FILE$
+back/.idea/.name
+back/.idea/codeStyles/codeStyleConfig.xml
+back/.idea/compiler.xml
+back/.idea/misc.xml
+back/.idea/vcs.xml
+back/log/all.log.2021-10-21
