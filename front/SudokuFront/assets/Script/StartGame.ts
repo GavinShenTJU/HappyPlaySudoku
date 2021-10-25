@@ -11,26 +11,17 @@ import ModelConfig from "./Utils/_Config"
 import ModelUtil from "./Utils/_Util"
 import ModelMsgSender from "./Utils/_MsgSender"
 import { sudokumsg } from "./Lib/SudokuMsg";
+import BaseMsg from "./Utils/_BaseMsgImpl";
+import Util from "./Utils/_Util";
 
 const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class GameStart extends cc.Component {
-
-
+    
     config: ModelConfig = new ModelConfig();
 
     onLoad() {
-
-
-
-        let ob = { userId: 123 };
-
-
-
-        let request = sudokumsg.UserGetChessCmd.create(ob);
-        let buf = sudokumsg.UserGetChessCmd.encode(request).finish();
-        cc.log(buf);
         this.node.on("touchstart", this.onTouch, this);
     }
     // start() {
@@ -99,20 +90,28 @@ export default class GameStart extends cc.Component {
         console.log(2);
     }
 
-
     doStart() {
-        //let startNode: cc.Node = cc.find('Canvas/游戏开始');
-        //if (startNode) {
-        //let startBtn: cc.Button = startNode.getComponent(cc.Button);
+        let orderNum: number = -1;
+        let chanIndex: number = -1;
+
         let node: cc.Node = cc.find('Canvas/难度选择').getChildByName('下拉列表');
         if (node) {
             console.log(node.getComponent(DropDown).selectedIndex);
+            chanIndex = node.getComponent(DropDown).selectedIndex;
         }
 
         let orderNode: cc.Node = cc.find('Canvas/阶数选择').getChildByName('阶数');
         if (orderNode) {
             console.log(orderNode.getComponent(cc.EditBox).string);
+            orderNum = Number(orderNode.getComponent(cc.EditBox).string);
         }
-        //}
+
+        let userGetChessCmd: sudokumsg.UserGetChessCmd = new sudokumsg.UserGetChessCmd();
+        userGetChessCmd.userId = Util.getRandomNum(1, 100000).valueOf();
+        userGetChessCmd.orderNum = orderNum;
+        userGetChessCmd.challLevel = <sudokumsg.ChallengeLevel>chanIndex;
+
+        let ob = new BaseMsg("USER_GET_CHESS_CMD", userGetChessCmd.toJSON());
+        ModelMsgSender.sendMsg(ob);
     }
 }

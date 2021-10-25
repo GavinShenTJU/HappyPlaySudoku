@@ -5,10 +5,7 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
-export default interface IBaseMsg {
-    msgCode: string;
-    msgBody: any;
-}
+import IBaseMsg from "./_BaseMsg";
 
 export default class BaseMsg implements IBaseMsg {
     msgCode: string;

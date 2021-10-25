@@ -25,4 +25,10 @@ export default class Util {
 
         return result[1];
     }
+
+    public static getRandomNum(Min, Max):Number {
+        var Range = Max - Min;
+        var Rand = Math.random();
+        return (Min + Math.round(Rand * Range));
+    }
 }

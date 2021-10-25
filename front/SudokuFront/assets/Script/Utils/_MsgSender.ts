@@ -6,6 +6,8 @@
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
 import IBaseMsg from "./_BaseMsg";
+import { sudokumsg } from "../Lib/SudokuMsg";
+import MsgRecognizer from "./_MsgRecognizer";
 
 /**
  * 与服务端WebSocket协议通信
@@ -107,9 +109,10 @@ export default class MsgSender {
 
         console.log(oMsg);
 
-        // // 序列化为字节数组
-        // let oUint8Array = __makeUint8Array(oMsg);
+        // 序列化为字节数组
+        let oUint8Array: any = this.__makeUint8Arrary(oMsg);
 
+        console.log(oUint8Array);
         // if (!oUint8Array ||
         //     oUint8Array.byteLength <= 0) {
         //     return;
@@ -125,5 +128,35 @@ export default class MsgSender {
      */
     public static onReceiveMsg(oMsg: IBaseMsg) {
         console.log(oMsg);
+    }
+
+    public static __makeUint8Arrary(oMsg: IBaseMsg): any {
+        if (!oMsg ||
+            !oMsg.msgCode ||
+            !oMsg.msgBody) {
+            return null;
+        }
+
+        // 获取消息代码
+        let strMsgCode = oMsg.msgCode;
+        let nMsgCode = sudokumsg.MsgCode[strMsgCode];
+
+        // 获取消息类型
+        let strMsgType = MsgRecognizer.recognize(nMsgCode);
+        if (!strMsgType) {
+            // 如果无法识别为消息类型,
+            console.error(`无法识别为消息类型, msgCode = ${strMsgCode} ( ${nMsgCode} )`);
+            return null;
+        }
+
+        //获取对应的 Protobuf 消息
+        let oProtobufMsg = MsgRecognizer.initProtoMsg(strMsgType);
+        if (!oProtobufMsg) {
+            // 如果对应的 Protobuf 消息为空,
+            console.error(`对应的 Protobuf 消息为空, strMsgType = ${strMsgType}`);
+            return null;
+        }
+
+        return oProtobufMsg.encode(oMsg.msgBody).finish();
     }
 }
