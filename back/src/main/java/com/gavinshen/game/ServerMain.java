@@ -37,13 +37,14 @@ public class ServerMain {
                 ch.pipeline().addLast(
                         new HttpServerCodec(), // Http 服务器编解码器
                         new HttpObjectAggregator(65535), // 内容长度限制
-                        new WebSocketServerProtocolHandler("/websocket") // WebSocket 协议处理器, 在这里处理握手、ping、pong 等消息
+                        new WebSocketServerProtocolHandler("/websocket"), // WebSocket 协议处理器, 在这里处理握手、ping、pong 等消息
+                        new GameMsgDecoder()
                 );
             }
         });
 
         try {
-            // 绑定 12345 端口,
+            // 绑定 65535 端口,
             // 注意: 实际项目中会使用 argArray 中的参数来指定端口号
             ChannelFuture f = b.bind(9090).sync();
 

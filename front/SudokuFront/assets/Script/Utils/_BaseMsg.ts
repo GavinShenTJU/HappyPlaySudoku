@@ -10,12 +10,3 @@ export default interface IBaseMsg {
     msgBody: any;
 }
 
-export default class BaseMsg implements IBaseMsg {
-    msgCode: string;
-    msgBody: any;
-
-    constructor(msgCode: string, msgBody: any) {
-        this.msgCode = msgCode;
-        this.msgBody = msgBody;
-    }
-}

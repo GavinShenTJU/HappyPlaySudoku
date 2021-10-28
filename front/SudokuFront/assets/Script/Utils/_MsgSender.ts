@@ -42,9 +42,6 @@ export default class MsgSender {
         if (this._goWebSocket) {
             return;
         }
-
-        console.log("尝试连接服务器");
-
         //创建 WebSocket
         let oWebSocket = new WebSocket(this._webSocketUrl);
         oWebSocket.binaryType = "arraybuffer";
@@ -107,19 +104,15 @@ export default class MsgSender {
             return;
         }
 
-        console.log(oMsg);
-
         // 序列化为字节数组
         let oUint8Array: any = this.__makeUint8Arrary(oMsg);
+        if (!oUint8Array ||
+            oUint8Array.byteLength <= 0) {
+            return;
+        }
 
-        console.log(oUint8Array);
-        // if (!oUint8Array ||
-        //     oUint8Array.byteLength <= 0) {
-        //     return;
-        // }
-
-        // // 发送字节数组
-        // g_oWebSocket.send(oUint8Array);
+        // 发送字节数组
+        this._goWebSocket.send(oUint8Array);
     }
 
     /**
@@ -138,11 +131,11 @@ export default class MsgSender {
         }
 
         // 获取消息代码
-        let strMsgCode = oMsg.msgCode;
+        let strMsgCode: string = oMsg.msgCode;
         let nMsgCode = sudokumsg.MsgCode[strMsgCode];
 
         // 获取消息类型
-        let strMsgType = MsgRecognizer.recognize(nMsgCode);
+        let strMsgType: string = MsgRecognizer.recognize(nMsgCode);
         if (!strMsgType) {
             // 如果无法识别为消息类型,
             console.error(`无法识别为消息类型, msgCode = ${strMsgCode} ( ${nMsgCode} )`);
@@ -157,6 +150,16 @@ export default class MsgSender {
             return null;
         }
 
-        return oProtobufMsg.encode(oMsg.msgBody).finish();
+        let pbMsgCode: number = Number(strMsgCode).valueOf();       
+        let writer = sudokumsg.SuperUtils.GetWriter(); 
+        //写消息编号
+        writer.uint32((pbMsgCode >> 8) & 0xff);
+        writer.uint32(pbMsgCode & 0xff);
+
+        let oUnit8Array = oProtobufMsg
+            .encode(oMsg.msgBody, writer)
+            .finish();
+
+        return oUnit8Array;
     }
 }

@@ -1,4 +1,4 @@
-//import * as $protobuf from "protobufjs";
+import * as $protobuf from "protobuf";
 /** Namespace sudokumsg. */
 //declare global {}
 export namespace sudokumsg {
@@ -16,17 +16,21 @@ export namespace sudokumsg {
         DIFFICULTY = 2
     }
 
+    class SuperUtils {
+        public static GetWriter(): $protobuf.Writer;
+    }
+
     /** Properties of a UserGetChessCmd. */
     interface IUserGetChessCmd {
 
         /** UserGetChessCmd userId */
-        userId?: (number|null);
+        userId?: (number | null);
 
         /** UserGetChessCmd orderNum */
-        orderNum?: (number|null);
+        orderNum?: (number | null);
 
         /** UserGetChessCmd challLevel */
-        challLevel?: (sudokumsg.ChallengeLevel|null);
+        challLevel?: (sudokumsg.ChallengeLevel | null);
     }
 
     /** Represents a UserGetChessCmd. */
@@ -78,7 +82,7 @@ export namespace sudokumsg {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): sudokumsg.UserGetChessCmd;
+        public static decode(reader: ($protobuf.Reader | Uint8Array), length?: number): sudokumsg.UserGetChessCmd;
 
         /**
          * Decodes a UserGetChessCmd message from the specified reader or buffer, length delimited.
@@ -87,14 +91,14 @@ export namespace sudokumsg {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): sudokumsg.UserGetChessCmd;
+        public static decodeDelimited(reader: ($protobuf.Reader | Uint8Array)): sudokumsg.UserGetChessCmd;
 
         /**
          * Verifies a UserGetChessCmd message.
          * @param message Plain object to verify
          * @returns `null` if valid, otherwise the reason why it is not
          */
-        public static verify(message: { [k: string]: any }): (string|null);
+        public static verify(message: { [k: string]: any }): (string | null);
 
         /**
          * Creates a UserGetChessCmd message from a plain object. Also converts values to their respective internal types.
@@ -122,10 +126,10 @@ export namespace sudokumsg {
     interface IUserGetChessResult {
 
         /** UserGetChessResult userId */
-        userId?: (number|null);
+        userId?: (number | null);
 
         /** UserGetChessResult chessArray */
-        chessArray?: (number[]|null);
+        chessArray?: (number[] | null);
     }
 
     /** Represents a UserGetChessResult. */
@@ -174,7 +178,7 @@ export namespace sudokumsg {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): sudokumsg.UserGetChessResult;
+        public static decode(reader: ($protobuf.Reader | Uint8Array), length?: number): sudokumsg.UserGetChessResult;
 
         /**
          * Decodes a UserGetChessResult message from the specified reader or buffer, length delimited.
@@ -183,14 +187,14 @@ export namespace sudokumsg {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): sudokumsg.UserGetChessResult;
+        public static decodeDelimited(reader: ($protobuf.Reader | Uint8Array)): sudokumsg.UserGetChessResult;
 
         /**
          * Verifies a UserGetChessResult message.
          * @param message Plain object to verify
          * @returns `null` if valid, otherwise the reason why it is not
          */
-        public static verify(message: { [k: string]: any }): (string|null);
+        public static verify(message: { [k: string]: any }): (string | null);
 
         /**
          * Creates a UserGetChessResult message from a plain object. Also converts values to their respective internal types.

@@ -18,7 +18,7 @@ const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class GameStart extends cc.Component {
-    
+
     config: ModelConfig = new ModelConfig();
 
     onLoad() {
@@ -107,11 +107,15 @@ export default class GameStart extends cc.Component {
         }
 
         let userGetChessCmd: sudokumsg.UserGetChessCmd = new sudokumsg.UserGetChessCmd();
-        userGetChessCmd.userId = Util.getRandomNum(1, 100000).valueOf();
+        if (ModelUtil.getQueryStr("userId")) {
+            userGetChessCmd.userId = Number(ModelUtil.getQueryStr("userId"));
+        } else {
+            userGetChessCmd.userId = Util.getRandomNum(1, 100000).valueOf();
+        }
         userGetChessCmd.orderNum = orderNum;
         userGetChessCmd.challLevel = <sudokumsg.ChallengeLevel>chanIndex;
 
-        let ob = new BaseMsg("USER_GET_CHESS_CMD", userGetChessCmd.toJSON());
+        let ob = new BaseMsg(sudokumsg.MsgCode.USER_GET_CHESS_CMD.toString(), userGetChessCmd);
         ModelMsgSender.sendMsg(ob);
     }
 }

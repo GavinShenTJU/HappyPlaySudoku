@@ -18,6 +18,15 @@ $root.sudokumsg = (function() {
      */
     var sudokumsg = {};
 
+    sudokumsg.SuperUtils = (function(){        
+        function SuperUtils() {            
+        }
+        SuperUtils.GetWriter = function GetWriter(){
+            return $Writer.create();
+        }
+        return SuperUtils;
+    })();
+
     /**
      * MsgCode enum.
      * @name sudokumsg.MsgCode
