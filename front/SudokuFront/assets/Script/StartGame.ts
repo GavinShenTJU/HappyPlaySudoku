@@ -13,6 +13,7 @@ import ModelMsgSender from "./Utils/_MsgSender"
 import { sudokumsg } from "./Lib/SudokuMsg";
 import BaseMsg from "./Utils/_BaseMsgImpl";
 import Util from "./Utils/_Util";
+import IBaseMsg from "./Utils/_BaseMsg";
 
 const { ccclass, property } = cc._decorator;
 
@@ -29,7 +30,6 @@ export default class GameStart extends cc.Component {
     // update (dt) {}
 
     onTouch() {
-        //let self = this;
         let strServerAddr = ModelUtil.getQueryStr("serverAddr") || this.config.serverAddress;
         ModelAsyc.serial(
             //
@@ -94,18 +94,21 @@ export default class GameStart extends cc.Component {
         let orderNum: number = -1;
         let chanIndex: number = -1;
 
+        //获取难度等级
         let node: cc.Node = cc.find('Canvas/难度选择').getChildByName('下拉列表');
         if (node) {
             console.log(node.getComponent(DropDown).selectedIndex);
             chanIndex = node.getComponent(DropDown).selectedIndex;
         }
 
+        //获取阶数
         let orderNode: cc.Node = cc.find('Canvas/阶数选择').getChildByName('阶数');
         if (orderNode) {
             console.log(orderNode.getComponent(cc.EditBox).string);
             orderNum = Number(orderNode.getComponent(cc.EditBox).string);
         }
 
+        //构建获取棋盘消息
         let userGetChessCmd: sudokumsg.UserGetChessCmd = new sudokumsg.UserGetChessCmd();
         if (ModelUtil.getQueryStr("userId")) {
             userGetChessCmd.userId = Number(ModelUtil.getQueryStr("userId"));
@@ -115,7 +118,8 @@ export default class GameStart extends cc.Component {
         userGetChessCmd.orderNum = orderNum;
         userGetChessCmd.challLevel = <sudokumsg.ChallengeLevel>chanIndex;
 
-        let ob = new BaseMsg(sudokumsg.MsgCode.USER_GET_CHESS_CMD.toString(), userGetChessCmd);
+        //发送消息
+        let ob: IBaseMsg = new BaseMsg(sudokumsg.MsgCode.USER_GET_CHESS_CMD.toString(), userGetChessCmd);
         ModelMsgSender.sendMsg(ob);
     }
 }
