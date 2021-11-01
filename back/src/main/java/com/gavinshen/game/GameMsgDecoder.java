@@ -40,14 +40,11 @@ public class GameMsgDecoder extends ChannelInboundHandlerAdapter {
         // 拿到消息体
         byte[] msgBody = new byte[byteBuf.readableBytes()];
         byteBuf.readBytes(msgBody);
-
         msgBuilder.clear();
         msgBuilder.mergeFrom(msgBody);
 
         // 构建消息
         Message newMsg = msgBuilder.build();
-        //Message newMsg =SudokuMsg.UserGetChessCmd.parseFrom(msgBody);
-
         if (null != newMsg) {
             ctx.fireChannelRead(newMsg);
         }

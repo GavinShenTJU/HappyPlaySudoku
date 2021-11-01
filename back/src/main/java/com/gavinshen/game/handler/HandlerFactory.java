@@ -15,12 +15,12 @@ public final class HandlerFactory {
     /**
      * 日志对象
      */
-    static private final Logger LOGGER = LoggerFactory.getLogger(HandlerFactory.class);
+     private static final Logger LOGGER = LoggerFactory.getLogger(HandlerFactory.class);
 
     /**
      * 处理器字典
      */
-    static private final Map<Class<?>, IHandler<? extends GeneratedMessageV3>> _handlerMap = new HashMap<>();
+     private static final Map<Class<?>, IHandler<? extends GeneratedMessageV3>> _handlerMap = new HashMap<>();
 
     /**
      * 私有化类默认构造器
@@ -31,7 +31,7 @@ public final class HandlerFactory {
     /**
      * 初始化
      */
-    static public void init() {
+    public static void init() {
         LOGGER.info("==== 完成 Cmd 和 Handler 的关联 ====");
 
         // 获取包名称
@@ -98,7 +98,7 @@ public final class HandlerFactory {
      * @param msgClazz 消息类
      * @return 指令处理器
      */
-    static public IHandler<? extends GeneratedMessageV3> create(Class<?> msgClazz) {
+    public static IHandler<? extends GeneratedMessageV3> create(Class<?> msgClazz) {
         if (null == msgClazz) {
             return null;
         }

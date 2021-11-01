@@ -38,10 +38,8 @@ public class GameMsgHandler extends SimpleChannelInboundHandler<Object> {
                 cmdHandler = HandlerFactory.create(msgClazz);
 
         if (null == cmdHandler) {
-            LOGGER.error(
-                    "未找到相对应的指令处理器, msgClazz = {}",
-                    msgClazz.getName()
-            );
+            LOGGER.error("未找到相对应的指令处理器, msgClazz = {}",
+                    msgClazz.getName());
             return;
         }
 

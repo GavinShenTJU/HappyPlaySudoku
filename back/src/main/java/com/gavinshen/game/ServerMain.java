@@ -1,6 +1,8 @@
 package com.gavinshen.game;
 
+import com.gavinshen.game.business.GameCore;
 import com.gavinshen.game.handler.HandlerFactory;
+import com.gavinshen.game.msg.SudokuMsg;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -13,6 +15,8 @@ import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.HashMap;
 
 public class ServerMain {
     /**
@@ -30,6 +34,13 @@ public class ServerMain {
         //初始化参数
         GameMsgRecognizer.init();
         HandlerFactory.init();
+        GameCore.init(new HashMap<SudokuMsg.ChallengeLevel, Float>() {
+            {
+                put(SudokuMsg.ChallengeLevel.SIMPLE, 0.2f);
+                put(SudokuMsg.ChallengeLevel.MEDIUM, 0.5f);
+                put(SudokuMsg.ChallengeLevel.DIFFICULTY, 0.6f);
+            }
+        });
 
         //启动Netty Server
         EventLoopGroup bossGroup = new NioEventLoopGroup();
